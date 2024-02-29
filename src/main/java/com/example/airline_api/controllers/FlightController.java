@@ -24,8 +24,8 @@ public class FlightController {
 
     // Display a specific flight
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Flight> getFlightById(){
-        return null;
+    public ResponseEntity<Flight> getFlightById(@PathVariable Long id){
+        return new ResponseEntity<>(flightService.getFlightById(id), HttpStatus.OK);
     }
 
     // Add details of a new flight
