@@ -1,6 +1,7 @@
 package com.example.airline_api.components;
 
 import com.example.airline_api.models.Flight;
+import com.example.airline_api.models.Passenger;
 import com.example.airline_api.repositories.FlightRepository;
 import com.example.airline_api.repositories.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ public class DataLoader implements ApplicationRunner {
         flightRepository.save(flightHND);
 
         //Generate passengers
-
+//        Passenger passenger1 = new Passenger("Zsolt", "vismajor@gmail.com");
+        
 
     }
 }
