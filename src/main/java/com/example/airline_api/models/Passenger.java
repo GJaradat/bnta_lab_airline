@@ -22,12 +22,7 @@ public class Passenger {
     private String email;
 
     @JsonIgnoreProperties({"passengers"})
-    @ManyToMany
-    @JoinTable(
-            name = "bookings",
-            joinColumns = @JoinColumn (name = "passenger_id"),
-            inverseJoinColumns = @JoinColumn (name = "flight_id")
-    )
+    @ManyToMany(mappedBy = "passengers")
     private List<Flight> flights;
 
     public Passenger(String name, String email) {

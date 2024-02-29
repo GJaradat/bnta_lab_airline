@@ -1,7 +1,9 @@
 package com.example.airline_api.services;
 
+import com.example.airline_api.models.BookingDTO;
 import com.example.airline_api.models.Flight;
 import com.example.airline_api.repositories.FlightRepository;
+import com.example.airline_api.repositories.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ public class FlightService {
 
     @Autowired
     FlightRepository flightRepository;
+
+    @Autowired
+    PassengerRepository passengerRepository;
 
 
     public void saveFlight(Flight flight){
@@ -24,5 +29,15 @@ public class FlightService {
 
     public Flight getFlightById(Long id){
         return flightRepository.findById(id).get();
+    }
+
+    public Flight bookFlight(BookingDTO bookingDTO){
+        //get the specific flight
+        Flight flight = flightRepository.findById(bookingDTO.getFlightId()).get();
+        //get the passenger from the DB and add them to flight
+        flight.addPassenger(passengerRepository.findById(bookingDTO.getPassengerId()).get());
+        //patch the flight in the DB
+        flightRepository.save(flight);
+        return flight;
     }
 }
