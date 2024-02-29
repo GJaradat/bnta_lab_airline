@@ -6,6 +6,7 @@ import com.example.airline_api.repositories.FlightRepository;
 import com.example.airline_api.repositories.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class FlightService {
         return flightRepository.findById(id).get();
     }
 
+    @Transactional
     public Flight bookFlight(BookingDTO bookingDTO){
         //get the specific flight
         Flight flight = flightRepository.findById(bookingDTO.getFlightId()).get();
@@ -39,5 +41,11 @@ public class FlightService {
         //patch the flight in the DB
         flightRepository.save(flight);
         return flight;
+    }
+
+    public String cancelFlight(Long id){
+        String msg = String.format("Cancelled flight to %s", flightRepository.findById(id).get().getDestination());
+        flightRepository.delete(flightRepository.getReferenceById(id));
+        return msg;
     }
 }
