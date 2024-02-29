@@ -28,14 +28,19 @@ public class FlightController {
                 // return 404 if no flights to that destination
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
+            //return filtered flights by given destination
             return new ResponseEntity<>(flightService.getAllFlightsFilter(destination), HttpStatus.OK);
         }
+        //return all flights
         return new ResponseEntity<>(flightService.getAllFlights(), HttpStatus.OK);
     }
 
     // Display a specific flight
     @GetMapping(value = "/{id}")
     public ResponseEntity<Flight> getFlightById(@PathVariable Long id){
+        if (!flightService.checkIfFlightExists(id)){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(flightService.getFlightById(id), HttpStatus.OK);
     }
 
@@ -52,7 +57,7 @@ public class FlightController {
         Flight flight = flightService.bookFlight(bookingDTO);
         if (flight == null){
             //flight is full already
-            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(flight, HttpStatus.OK);
     }
@@ -60,6 +65,9 @@ public class FlightController {
     // Cancel flight
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> cancelFlight(@PathVariable Long id){
+        if (!flightService.checkIfFlightExists(id)){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(flightService.cancelFlight(id), HttpStatus.OK);
     }
 

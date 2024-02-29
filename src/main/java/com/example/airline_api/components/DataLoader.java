@@ -11,6 +11,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Component
 public class DataLoader implements ApplicationRunner {
 
@@ -30,22 +33,22 @@ public class DataLoader implements ApplicationRunner {
     public void run (ApplicationArguments args) throws Exception{
 
         //Generate flights
-        Flight flightGLA = new Flight("Glasgow", 5, "29/02/2024", "17:15");
+        Flight flightGLA = new Flight("Glasgow", 5, LocalDate.of(2024, 2, 29), LocalTime.of(17,15));
         flightRepository.save(flightGLA);
 
-        Flight flightSOF = new Flight("Sofia", 10, "01/03/2024", "10:15");
+        Flight flightSOF = new Flight("Sofia", 10, LocalDate.of(2024, 3, 1), LocalTime.of(18,25));
         flightRepository.save(flightSOF);
 
-        Flight flightSTN = new Flight("Stansted", 5, "28/02/2024", "19:10");
+        Flight flightSTN = new Flight("Stansted", 5, LocalDate.of(2024, 2, 28), LocalTime.of(10,15));
         flightRepository.save(flightSTN);
 
-        Flight flightMIA = new Flight("Malta", 3, "29/02/2024", "07:55");
+        Flight flightMIA = new Flight("Malta", 3, LocalDate.of(2024, 2, 24), LocalTime.of(7,45));
         flightRepository.save(flightMIA);
 
-        Flight flightHND = new Flight("Tokyo", 1, "04/03/2024", "10:04");
+        Flight flightHND = new Flight("Tokyo", 10, LocalDate.of(2024, 2, 29), LocalTime.of(19,22));
         flightRepository.save(flightHND);
 
-        Flight flightGLA2 = new Flight("Glasgow", 2, "22/02/2024", "17:15");
+        Flight flightGLA2 = new Flight("Glasgow", 2, LocalDate.of(2024, 2, 22), LocalTime.of(17,15));
         flightRepository.save(flightGLA2);
 
         //Generate passengers
@@ -68,7 +71,7 @@ public class DataLoader implements ApplicationRunner {
         passengerRepository.save(passenger6);
 
         //Book flights
-        flightService.bookFlight(new BookingDTO(4L,1L));
+        flightService.bookFlight(new BookingDTO(4L, 1L));
         flightService.bookFlight(new BookingDTO(1L, 2L));
         flightService.bookFlight(new BookingDTO(1L, 3L));
         flightService.bookFlight(new BookingDTO(2L, 4L));

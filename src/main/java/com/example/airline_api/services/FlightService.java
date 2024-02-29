@@ -68,4 +68,8 @@ public class FlightService {
     public List<Flight> getAllFlightsFilter(String destination){
         return flightRepository.findByDestination(destination);
     }
+
+    public boolean checkIfFlightExists(Long id){
+       return (flightRepository.existsById(id));
+    }
 }
