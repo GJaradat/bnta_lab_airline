@@ -19,7 +19,17 @@ public class FlightController {
 
     // Display all available flights
     @GetMapping
-    public ResponseEntity<List<Flight>> getAllFlights(){
+    public ResponseEntity<List<Flight>> getAllFlightsAndFilters(
+            @RequestParam(required = false, name = "destination") String destination
+    ){
+        if(destination != null){
+            List<Flight> flights = flightService.getAllFlightsFilter(destination);
+            if(flights.isEmpty()){
+                // return 404 if no flights to that destination
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(flightService.getAllFlightsFilter(destination), HttpStatus.OK);
+        }
         return new ResponseEntity<>(flightService.getAllFlights(), HttpStatus.OK);
     }
 
@@ -39,7 +49,12 @@ public class FlightController {
     // Book passenger on a flight
     @PatchMapping
     public ResponseEntity<Flight> addPassengerToFlight(@RequestBody BookingDTO bookingDTO){
-        return new ResponseEntity<>(flightService.bookFlight(bookingDTO), HttpStatus.OK);
+        Flight flight = flightService.bookFlight(bookingDTO);
+        if (flight == null){
+            //flight is full already
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(flight, HttpStatus.OK);
     }
 
     // Cancel flight

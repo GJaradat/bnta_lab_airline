@@ -45,6 +45,9 @@ public class DataLoader implements ApplicationRunner {
         Flight flightHND = new Flight("Tokyo", 1, "04/03/2024", "10:04");
         flightRepository.save(flightHND);
 
+        Flight flightGLA2 = new Flight("Glasgow", 2, "22/02/2024", "17:15");
+        flightRepository.save(flightGLA2);
+
         //Generate passengers
         Passenger passenger1 = new Passenger("Zsolt", "vismajor@gmail.com");
         passengerRepository.save(passenger1);
@@ -65,21 +68,23 @@ public class DataLoader implements ApplicationRunner {
         passengerRepository.save(passenger6);
 
         //Book flights
-//        flightService.bookFlight(new BookingDTO(4L,1L));
-//        flightService.bookFlight(1L, 2L);
-//        flightService.bookFlight(1L, 3L);
-//        flightService.bookFlight(2L, 4L);
-//        flightService.bookFlight(3L, 5L);
-//        flightService.bookFlight(4L, 6L);
-//
-//        flightService.bookFlight(5L, 1L);
-//        flightService.bookFlight(5L, 2L);
-//        flightService.bookFlight(5L, 3L);
-//        flightService.bookFlight(5L, 4L);
-//        flightService.bookFlight(5L, 5L);
-//        flightService.bookFlight(5L, 6L);
+        flightService.bookFlight(new BookingDTO(4L,1L));
+        flightService.bookFlight(new BookingDTO(1L, 2L));
+        flightService.bookFlight(new BookingDTO(1L, 3L));
+        flightService.bookFlight(new BookingDTO(2L, 4L));
+        flightService.bookFlight(new BookingDTO(3L, 5L));
+        flightService.bookFlight(new BookingDTO(4L, 6L));
 
+        flightService.bookFlight(new BookingDTO(5L, 1L));
+        flightService.bookFlight(new BookingDTO(5L, 2L));
+        flightService.bookFlight(new BookingDTO(5L, 3L));
+        flightService.bookFlight(new BookingDTO(5L, 4L));
+        flightService.bookFlight(new BookingDTO(5L, 5L));
+        flightService.bookFlight(new BookingDTO(5L, 6L));
 
+        //fill flight to Glasgow
+        flightService.bookFlight(new BookingDTO(6L, 1L));
+        flightService.bookFlight(new BookingDTO(6L, 3L));
 
 
     }

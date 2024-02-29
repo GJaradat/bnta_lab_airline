@@ -2,6 +2,7 @@ package com.example.airline_api.services;
 
 import com.example.airline_api.models.BookingDTO;
 import com.example.airline_api.models.Flight;
+import com.example.airline_api.models.Passenger;
 import com.example.airline_api.repositories.FlightRepository;
 import com.example.airline_api.repositories.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,23 @@ public class FlightService {
     public Flight bookFlight(BookingDTO bookingDTO){
         //get the specific flight
         Flight flight = flightRepository.findById(bookingDTO.getFlightId()).get();
-        //get the passenger from the DB and add them to flight
-        flight.addPassenger(passengerRepository.findById(bookingDTO.getPassengerId()).get());
+        if(flight.getCapacity() == 0){
+            return null;
+        }
+        //get the passenger from the DB
+        Passenger newPassenger = passengerRepository.findById(bookingDTO.getPassengerId()).get();
+
+        //NO DOUBLE BOOKINGS
+        for(Passenger passenger : flight.getPassengers()){
+            if(passenger.getId() == newPassenger.getId()){
+                return flight;
+            }
+        }
+
+        //Add to DB
+        flight.addPassenger(newPassenger);
+        //reduce capacity(seat is booked)
+        flight.setCapacity(flight.getCapacity() - 1);
         //patch the flight in the DB
         flightRepository.save(flight);
         return flight;
@@ -47,5 +63,9 @@ public class FlightService {
         String msg = String.format("Cancelled flight to %s", flightRepository.findById(id).get().getDestination());
         flightRepository.delete(flightRepository.getReferenceById(id));
         return msg;
+    }
+
+    public List<Flight> getAllFlightsFilter(String destination){
+        return flightRepository.findByDestination(destination);
     }
 }
